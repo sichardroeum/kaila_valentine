@@ -8,48 +8,15 @@
     <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
     <style>
-        body { 
-            margin: 0; 
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
-            background-color: #fff5f8; 
-            overflow-x: hidden;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            min-height: 100vh;
-        }
-        #root { width: 100%; text-align: center; z-index: 1; }
-        .heart {
-            position: absolute;
-            color: rgba(255, 105, 180, 0.3);
-            font-size: 20px;
-            animation: float 6s linear infinite;
-            top: 100vh;
-            pointer-events: none;
-        }
-        @keyframes float {
-            0% { transform: translateY(0) rotate(0deg); opacity: 1; }
-            100% { transform: translateY(-110vh) rotate(360deg); opacity: 0; }
-        }
-        .gif-container {
-            width: 250px;
-            height: 250px;
-            margin: 0 auto;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background-color: rgba(255, 255, 255, 0.3);
-            border-radius: 20px;
-            overflow: hidden;
-        }
-        img { max-width: 100%; max-height: 100%; border-radius: 20px; }
+        body { margin: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #fff5f8; }
+        #root { min-height: 100vh; display: flex; align-items: center; justify-content: center; }
     </style>
 </head>
 <body>
     <div id="root"></div>
 
     <script type="text/babel">
-        const { useState, useEffect } = React;
+        const { useState } = React;
 
         const NO_PHRASES = [
             "No 💔",
@@ -61,48 +28,19 @@
             "IF YOU DONT PRESS YESS IM GOING TO MURDER YOU",
         ];
 
-        // RELIABLE IMGUR LINKS
-        const NO_GIFS = [
-            "https://i.imgur.com/BfbeY9v.gif", // Jumping bear
-            "https://i.imgur.com/8m4v5qS.gif", // Sad bear
-            "https://i.imgur.com/07Y2GvK.gif", // Crying bear
-            "https://i.imgur.com/796Hh9A.gif", // Angry/sad bear
-            "https://i.imgur.com/E8S01r4.gif", // Devastated
-        ];
-
-        const YES_GIF = "https://i.imgur.com/vS3Lh4L.gif"; // Bears kissing
-
-        function HeartBackground() {
-            const [hearts, setHearts] = useState([]);
-            useEffect(() => {
-                const interval = setInterval(() => {
-                    setHearts(prev => [...prev, { id: Date.now(), left: Math.random() * 100 }]);
-                }, 400);
-                return () => clearInterval(interval);
-            }, []);
-            return (
-                <>
-                    {hearts.map(h => <span key={h.id} className="heart" style={{ left: `${h.left}%` }}>❤️</span>)}
-                </>
-            );
-        }
-
         function App() {
             const [noClicks, setNoClicks] = useState(0);
             const [isValentine, setIsValentine] = useState(false);
-            
-            const yesButtonSize = (noClicks * 20) + 18;
-            const currentGif = isValentine ? YES_GIF : NO_GIFS[Math.min(noClicks, NO_GIFS.length - 1)];
+            const yesButtonSize = (noClicks * 20) + 16;
+
+            const firstImg = "https://media.tenor.com/VIChDQ6ejRQAAAAj/jumping-bear-hearts-no-png.gif";
+            const secondImg = "https://media.tenor.com/f1xnRxTRxLAAAAAj/bears-with-kisses-bg.gif";
 
             return (
-                <div>
-                    <HeartBackground />
-                    <div className="gif-container">
-                        <img key={currentGif} src={currentGif} alt="Cute animation" />
-                    </div>
-                    
+                <div style={{ display: "flex", flexDirection: "column", alignItems: "center", textAlign: "center", padding: "20px" }}>
                     {!isValentine ? (
                         <>
+                            <img src={firstImg} alt="Cute bear" style={{ width: "200px" }} />
                             <h1 style={{ color: "#d32f2f", margin: "20px 0" }}>Will you be my Valentine, Kaila? 💘</h1>
                             <div style={{ display: "flex", alignItems: "center", justifyContent: "center", flexWrap: "wrap", gap: "10px" }}>
                                 <button
@@ -113,9 +51,8 @@
                                         backgroundColor: "#4caf50",
                                         color: "white",
                                         border: "none",
-                                        borderRadius: "8px",
+                                        borderRadius: "5px",
                                         cursor: "pointer",
-                                        boxShadow: "0 4px 15px rgba(0,0,0,0.1)"
                                     }}
                                 >Yes</button>
                                 <button
@@ -126,7 +63,7 @@
                                         backgroundColor: "#f44336",
                                         color: "white",
                                         border: "none",
-                                        borderRadius: "8px",
+                                        borderRadius: "5px",
                                         cursor: "pointer",
                                     }}
                                 >
@@ -136,10 +73,11 @@
                         </>
                     ) : (
                         <div style={{ animation: "fadeIn 1s" }}>
-                            <div style={{ fontSize: "32px", color: "#ec407a", fontWeight: "bold", marginTop: "20px", padding: "0 10px" }}>
+                            <img src={secondImg} alt="Bears kissing" style={{ width: "250px" }} />
+                            <div style={{ fontSize: "42px", color: "#ec407a", fontWeight: "bold", marginTop: "20px" }}>
                                 Yay!!! u my valentine heeheehehe i give u baby... jk 💖🎉
                             </div>
-                            <p style={{ fontSize: "18px", color: "#d32f2f", padding: "0 20px" }}>
+                            <p style={{ fontSize: "20px", color: "#d32f2f" }}>
                                 I love you more than anythung in this world! <br/>
                                 <strong>YOU ARE MY NUMBER 1 GF AND FUTURE WIFE/BABBy MAMA</strong>
                             </p>
