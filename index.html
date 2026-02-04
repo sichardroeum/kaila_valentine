@@ -13,32 +13,36 @@
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
             background-color: #fff5f8; 
             overflow-x: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
         }
-        #root { min-height: 100vh; display: flex; align-items: center; justify-content: center; position: relative; }
-        
+        #root { width: 100%; text-align: center; z-index: 1; }
         .heart {
             position: absolute;
             color: rgba(255, 105, 180, 0.3);
             font-size: 20px;
             animation: float 6s linear infinite;
             top: 100vh;
+            pointer-events: none;
         }
         @keyframes float {
             0% { transform: translateY(0) rotate(0deg); opacity: 1; }
             100% { transform: translateY(-110vh) rotate(360deg); opacity: 0; }
         }
-
-        /* Shake animation for the No button */
-        .shake {
-            animation: shake 0.5s;
+        .gif-container {
+            width: 250px;
+            height: 250px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: rgba(255, 255, 255, 0.3);
+            border-radius: 20px;
+            overflow: hidden;
         }
-        @keyframes shake {
-            0% { transform: translateX(0); }
-            25% { transform: translateX(-5px); }
-            50% { transform: translateX(5px); }
-            75% { transform: translateX(-5px); }
-            100% { transform: translateX(0); }
-        }
+        img { max-width: 100%; max-height: 100%; border-radius: 20px; }
     </style>
 </head>
 <body>
@@ -57,16 +61,16 @@
             "IF YOU DONT PRESS YESS IM GOING TO MURDER YOU",
         ];
 
-        // FIXED DIRECT LINKS
+        // RELIABLE IMGUR LINKS
         const NO_GIFS = [
-            "https://media1.giphy.com/media/v1.Y2lkPTc5MGI3NjExMmo3c3l5ODh3Z2p3M201b2p6Ym10bmZ3bmZ3bmZ3bmZ3bmZ3bmZ3JmVwPXYxX2ludGVybmFsX2dpZl9ieV9pZCZjdD1z/T2pXovkCPlYpL66LTC/giphy.gif",
-            "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExOHpueGZ4eGZ4eGZ4eGZ4eGZ4eGZ4eGZ4eGZ4eGZ4eGZ4ZSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9cw/cLS1cfxvGOPVpf9g3y/giphy.gif",
-            "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExOHpueGZ4eGZ4eGZ4eGZ4eGZ4eGZ4eGZ4eGZ4eGZ4eGZ4ZSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9cw/TW8Ma1a8ZsZGw/giphy.gif",
-            "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExOHpueGZ4eGZ4eGZ4eGZ4eGZ4eGZ4eGZ4eGZ4eGZ4eGZ4ZSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9cw/3o7TKVUn7iM8FMEU24/giphy.gif",
-            "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExOHpueGZ4eGZ4eGZ4eGZ4eGZ4eGZ4eGZ4eGZ4eGZ4eGZ4ZSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9cw/K6jSj8kkjBWZ3Y9mxl/giphy.gif"
+            "https://i.imgur.com/BfbeY9v.gif", // Jumping bear
+            "https://i.imgur.com/8m4v5qS.gif", // Sad bear
+            "https://i.imgur.com/07Y2GvK.gif", // Crying bear
+            "https://i.imgur.com/796Hh9A.gif", // Angry/sad bear
+            "https://i.imgur.com/E8S01r4.gif", // Devastated
         ];
 
-        const YES_GIF = "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExOHpueGZ4eGZ4eGZ4eGZ4eGZ4eGZ4eGZ4eGZ4eGZ4eGZ4ZSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9cw/L2z7uicW8z2Ym1jWpB/giphy.gif";
+        const YES_GIF = "https://i.imgur.com/vS3Lh4L.gif"; // Bears kissing
 
         function HeartBackground() {
             const [hearts, setHearts] = useState([]);
@@ -77,32 +81,28 @@
                 return () => clearInterval(interval);
             }, []);
             return (
-                <div style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', pointerEvents: 'none' }}>
+                <>
                     {hearts.map(h => <span key={h.id} className="heart" style={{ left: `${h.left}%` }}>❤️</span>)}
-                </div>
+                </>
             );
         }
 
         function App() {
             const [noClicks, setNoClicks] = useState(0);
             const [isValentine, setIsValentine] = useState(false);
-            const [isShaking, setIsShaking] = useState(false);
             
-            const yesButtonSize = (noClicks * 20) + 16;
+            const yesButtonSize = (noClicks * 20) + 18;
             const currentGif = isValentine ? YES_GIF : NO_GIFS[Math.min(noClicks, NO_GIFS.length - 1)];
 
-            const handleNo = () => {
-                setNoClicks(noClicks + 1);
-                setIsShaking(true);
-                setTimeout(() => setIsShaking(false), 500);
-            };
-
             return (
-                <div style={{ display: "flex", flexDirection: "column", alignItems: "center", textAlign: "center", padding: "20px", zIndex: 1 }}>
+                <div>
                     <HeartBackground />
+                    <div className="gif-container">
+                        <img key={currentGif} src={currentGif} alt="Cute animation" />
+                    </div>
+                    
                     {!isValentine ? (
                         <>
-                            <img key={currentGif} src={currentGif} alt="Cute bear" style={{ width: "250px", height: "250px", borderRadius: "20px" }} />
                             <h1 style={{ color: "#d32f2f", margin: "20px 0" }}>Will you be my Valentine, Kaila? 💘</h1>
                             <div style={{ display: "flex", alignItems: "center", justifyContent: "center", flexWrap: "wrap", gap: "10px" }}>
                                 <button
@@ -115,12 +115,11 @@
                                         border: "none",
                                         borderRadius: "8px",
                                         cursor: "pointer",
-                                        boxShadow: "0 4px 15px rgba(76,175,80,0.3)"
+                                        boxShadow: "0 4px 15px rgba(0,0,0,0.1)"
                                     }}
                                 >Yes</button>
                                 <button
-                                    onClick={handleNo}
-                                    className={isShaking ? "shake" : ""}
+                                    onClick={() => setNoClicks(noClicks + 1)}
                                     style={{
                                         fontSize: "16px",
                                         padding: "10px 20px",
@@ -137,11 +136,10 @@
                         </>
                     ) : (
                         <div style={{ animation: "fadeIn 1s" }}>
-                            <img src={YES_GIF} alt="Bears kissing" style={{ width: "250px", borderRadius: "20px" }} />
-                            <div style={{ fontSize: "42px", color: "#ec407a", fontWeight: "bold", marginTop: "20px" }}>
+                            <div style={{ fontSize: "32px", color: "#ec407a", fontWeight: "bold", marginTop: "20px", padding: "0 10px" }}>
                                 Yay!!! u my valentine heeheehehe i give u baby... jk 💖🎉
                             </div>
-                            <p style={{ fontSize: "20px", color: "#d32f2f" }}>
+                            <p style={{ fontSize: "18px", color: "#d32f2f", padding: "0 20px" }}>
                                 I love you more than anythung in this world! <br/>
                                 <strong>YOU ARE MY NUMBER 1 GF AND FUTURE WIFE/BABBy MAMA</strong>
                             </p>
