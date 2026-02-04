@@ -16,7 +16,6 @@
         }
         #root { min-height: 100vh; display: flex; align-items: center; justify-content: center; position: relative; }
         
-        /* Floating Hearts Animation */
         .heart {
             position: absolute;
             color: rgba(255, 105, 180, 0.3);
@@ -27,6 +26,14 @@
         @keyframes float {
             0% { transform: translateY(0) rotate(0deg); opacity: 1; }
             100% { transform: translateY(-110vh) rotate(360deg); opacity: 0; }
+        }
+
+        .success-bg {
+            animation: bg-flash 0.5s infinite alternate;
+        }
+        @keyframes bg-flash {
+            from { background-color: #fff5f8; }
+            to { background-color: #ffe0e9; }
         }
     </style>
 </head>
@@ -39,12 +46,25 @@
         const NO_PHRASES = [
             "No 💔",
             "Kaila, please? 🥺",
-            "But we'd be so cute together! 💕",
-            "One more chance, beautiful?",
-            "Don't break my heart :(",
+            "BABY PLEASE 💕",
             "I'll buy you snacks! 🍫",
-            "Please don't do this to me, I'm fragile",
+            "BABY I WIILL DIE/CRY",
+            "I WILL TICKLE YOUUUU",
+            "IF YOU DONT PRESS YESS IM GOING TO MURDER YOU",
         ];
+
+        // Progressive GIFs for when she clicks "No"
+        const NO_GIFS = [
+            "https://media.tenor.com/VIChDQ6ejRQAAAAj/jumping-bear-hearts-no-png.gif", // Stage 0
+            "https://media1.tenor.com/m/FLBmfkn2QJ0AAAAC/im-good.gif",         // Stage 1
+            "https://media1.tenor.com/m/jQnArJCfymMAAAAC/fallingout-crying.gif",         // Stage 2
+            "https://media1.tenor.com/m/aveJW-reuDAAAAAC/sad-lonely.gif",              // Stage 3
+            "https://media1.tenor.com/m/IsWw9Cza5WwAAAAC/stan-twitter-leobylaw.gif",       // Stage 4
+            "https://media.tenor.com/NWidGesI01YAAAAi/threatening-threaten.gif",         // Stage 5
+            "https://media1.tenor.com/m/6hfGuoFqEMIAAAAC/duck-mad.gif"                 // Final Warning
+        ];
+
+        const YES_GIF = "https://media.tenor.com/f1xnRxTRxLAAAAAj/bears-with-kisses-bg.gif";
 
         function HeartBackground() {
             const [hearts, setHearts] = useState([]);
@@ -69,16 +89,16 @@
             const [isValentine, setIsValentine] = useState(false);
             const yesButtonSize = (noClicks * 20) + 16;
 
-            const firstImg = "https://media.tenor.com/VIChDQ6ejRQAAAAj/jumping-bear-hearts-no-png.gif";
-            const secondImg = "https://media.tenor.com/f1xnRxTRxLAAAAAj/bears-with-kisses-bg.gif";
+            // Pick the GIF based on how many times she clicked No
+            const currentGif = isValentine ? YES_GIF : NO_GIFS[Math.min(noClicks, NO_GIFS.length - 1)];
 
             return (
                 <div style={{ display: "flex", flexDirection: "column", alignItems: "center", textAlign: "center", padding: "20px", zIndex: 1 }}>
                     <HeartBackground />
                     {!isValentine ? (
                         <>
-                            <img src={firstImg} alt="Cute bear" style={{ width: "200px" }} />
-                            <h1 style={{ color: "#d32f2f", margin: "20px 0" }}>Will you be my Valentine, Kaila? 💘</h1>
+                            <img src={currentGif} alt="Cute bear" style={{ width: "250px", height: "250px", objectFit: "contain" }} />
+                            <h1 style={{ color: "#d32f2f", margin: "20px 0", maxWidth: "80%" }}>Will you be my Valentine, Kaila? 💘</h1>
                             <div style={{ display: "flex", alignItems: "center", justifyContent: "center", flexWrap: "wrap", gap: "10px" }}>
                                 <button
                                     onClick={() => setIsValentine(true)}
@@ -90,7 +110,8 @@
                                         border: "none",
                                         borderRadius: "8px",
                                         cursor: "pointer",
-                                        boxShadow: "0 4px 15px rgba(76, 175, 80, 0.3)"
+                                        boxShadow: "0 4px 15px rgba(76, 175, 80, 0.3)",
+                                        transition: "all 0.2s"
                                     }}
                                 >Yes</button>
                                 <button
@@ -110,12 +131,15 @@
                             </div>
                         </>
                     ) : (
-                        <div style={{ animation: "fadeIn 1s" }}>
-                            <img src={secondImg} alt="Bears kissing" style={{ width: "250px" }} />
-                            <div style={{ fontSize: "48px", color: "#ec407a", fontWeight: "bold", marginTop: "20px" }}>
-                                Yay!!! See you soon, Kaila! 💖🎉
+                        <div style={{ animation: "fadeIn 1s", padding: "20px", borderRadius: "20px", background: "rgba(255,255,255,0.4)", backdropFilter: "blur(5px)" }}>
+                            <img src={YES_GIF} alt="Bears kissing" style={{ width: "250px" }} />
+                            <div style={{ fontSize: "42px", color: "#ec407a", fontWeight: "bold", marginTop: "20px", lineHeight: "1.2" }}>
+                                Yay!!! u my valentine heeheehehe i give u baby... jk 💖🎉
                             </div>
-                            <p style={{ fontSize: "20px", color: "#d32f2f" }}>I love you more than all the snacks in the world! 🍫</p>
+                            <p style={{ fontSize: "22px", color: "#d32f2f", fontWeight: "500", marginTop: "20px" }}>
+                                I love you more than anythung in this world! <br/>
+                                <strong>YOU ARE MY NUMBER 1 GF AND FUTURE WIFE/BABBy MAMA</strong>
+                            </p>
                         </div>
                     )}
                 </div>
